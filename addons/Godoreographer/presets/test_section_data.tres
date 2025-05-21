@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ReusableSectionData" load_steps=2 format=3 uid="uid://bqxw4p1e1dw3k"]
+
+[ext_resource type="Script" uid="uid://xl0i68rytfbu" path="res://addons/Godoreographer/presets/reusable_preset_data.gd" id="1_djq0w"]
+
+[resource]
+script = ExtResource("1_djq0w")
+name = ""
+top_time_sig = 4
+bottom_time_sig = 4
+measure = 1
+metadata/_custom_type_script = "uid://xl0i68rytfbu"

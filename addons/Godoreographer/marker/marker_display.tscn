@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb75pop5k4gcj"]
+
+[ext_resource type="Script" uid="uid://c8kwl4fc5ou4v" path="res://addons/Godoreographer/marker/marker_display.gd" id="1_07kfc"]
+
+[node name="MarkerDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_07kfc")

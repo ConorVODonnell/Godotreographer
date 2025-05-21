@@ -1,0 +1,28 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Coreographer Plugin"
+run/main_scene="uid://clngehkffa06c"
+config/features=PackedStringArray("4.4", "Forward Plus")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Godoreographer/plugin.cfg")
+
+[gui]
+
+theme/custom="uid://bdbrorqnphd2y"
+theme/custom_font="uid://cu3rsse6xb14i"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.211765, 0.239216, 0.290196, 1)
