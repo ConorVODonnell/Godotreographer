@@ -1,23 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://clngehkffa06c"]
+[gd_scene load_steps=8 format=3 uid="uid://clngehkffa06c"]
 
 [ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/_base/godoreographer_theme.tres" id="1_4ngnw"]
 [ext_resource type="Script" uid="uid://boiet3sgolq76" path="res://addons/Godoreographer/_base/godoreographer.gd" id="1_n7r65"]
-[ext_resource type="Script" uid="uid://dltpwy6vxfov0" path="res://addons/Godoreographer/_base/time_ruler.gd" id="2_5bfwp"]
-[ext_resource type="Script" uid="uid://bu2qptn4bhahd" path="res://addons/Godoreographer/_base/waveform_display.gd" id="2_875i5"]
+[ext_resource type="PackedScene" uid="uid://caqofl2aputmj" path="res://addons/Godoreographer/waveform_viewport.tscn" id="3_i807x"]
+[ext_resource type="PackedScene" uid="uid://drgh3g7eolrl3" path="res://addons/Godoreographer/presets/preset_creator.tscn" id="4_4ngnw"]
 [ext_resource type="AudioStream" uid="uid://cbku32bieh2p0" path="res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav" id="4_n4urq"]
-[ext_resource type="Script" uid="uid://m4mmt5hjihd7" path="res://addons/Godoreographer/presets/preset_creator.gd" id="5_4ngnw"]
-[ext_resource type="Script" uid="uid://c6bj4wc2eag04" path="res://addons/Godoreographer/presets/preset_ruler.gd" id="6_m5qje"]
-[ext_resource type="Script" uid="uid://dkbvwrenmpivs" path="res://addons/Godoreographer/presets/preset_display.gd" id="6_wdfka"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_i807x"]
-font_size = 20
-
-[sub_resource type="Animation" id="Animation_i807x"]
+[sub_resource type="Animation" id="Animation_wdfka"]
 resource_name = "new_animation"
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ngnw"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m5qje"]
 _data = {
-&"new_animation": SubResource("Animation_i807x")
+&"new_animation": SubResource("Animation_wdfka")
 }
 
 [node name="Godoreographer" type="Control" node_paths=PackedStringArray("load_button", "audio_file_dialog", "play_pause_button", "loaded_file_name", "audio_player")]
@@ -31,14 +25,14 @@ focus_mode = 1
 theme = ExtResource("1_4ngnw")
 theme_type_variation = &"Godotreographer"
 script = ExtResource("1_n7r65")
-load_button = NodePath("PluginHBox/WaveformViewport/TopButtonContainer/LoadButton")
-audio_file_dialog = NodePath("AudioFileDialog")
-play_pause_button = NodePath("PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
-loaded_file_name = NodePath("PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
+load_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/LoadButton")
+audio_file_dialog = NodePath("WAVDialog")
+play_pause_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
+loaded_file_name = NodePath("VBoxContainer/PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
 audio_player = NodePath("AudioPlayer")
 metadata/_edit_lock_ = true
 
-[node name="PluginHBox" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,333 +40,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WaveformViewport" type="VBoxContainer" parent="PluginHBox"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="TopButtonContainer" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
+[node name="PluginHBox" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="LoadButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Load Audio"
-
-[node name="PlayPauseButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Play"
-
-[node name="VSeparator" type="VSeparator" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
+[node name="WaveformViewport" parent="VBoxContainer/PluginHBox" instance=ExtResource("3_i807x")]
 layout_mode = 2
 
-[node name="ZoomInButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Zoom In"
-
-[node name="ZoomOutButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Zoom Out"
-
-[node name="VSeparator2" type="VSeparator" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
+[node name="PanelSeparator" type="VSeparator" parent="VBoxContainer/PluginHBox"]
 layout_mode = 2
 
-[node name="PanLeftButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Pan Left"
-
-[node name="PanRightButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Pan Right"
-
-[node name="InfoHBox" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-
-[node name="LoadedFileName" type="Label" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-mouse_default_cursor_shape = 1
-text = "Invalid or unsupported audio file"
-
-[node name="VSeparator" type="VSeparator" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-
-[node name="RangeLabel" type="Label" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-text = "Range: 10 sec"
-
-[node name="VSeparator2" type="VSeparator" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-
-[node name="TimeRuler" type="Control" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-theme = ExtResource("1_4ngnw")
-theme_type_variation = &"TimeRuler"
-script = ExtResource("2_5bfwp")
-
-[node name="WaveformDisplay" type="Control" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(800, 150)
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 1
-theme = ExtResource("1_4ngnw")
-theme_type_variation = &"WaveformDisplay"
-script = ExtResource("2_875i5")
-
-[node name="SelectedMarkerContainer" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
-layout_mode = 2
-
-[node name="MarkerTypeDropdown" type="OptionButton" parent="PluginHBox/WaveformViewport/SelectedMarkerContainer"]
-visible = false
-layout_mode = 2
-selected = 0
-item_count = 69
-popup/item_0/text = "GENERIC"
-popup/item_0/id = 0
-popup/item_1/text = "BEAT"
-popup/item_1/id = 1
-popup/item_2/text = "CUE"
-popup/item_2/id = 2
-popup/item_3/text = "GENERIC"
-popup/item_3/id = 3
-popup/item_4/text = "BEAT"
-popup/item_4/id = 4
-popup/item_5/text = "CUE"
-popup/item_5/id = 5
-popup/item_6/text = "GENERIC"
-popup/item_6/id = 6
-popup/item_7/text = "BEAT"
-popup/item_7/id = 7
-popup/item_8/text = "CUE"
-popup/item_8/id = 8
-popup/item_9/text = "GENERIC"
-popup/item_9/id = 9
-popup/item_10/text = "BEAT"
-popup/item_10/id = 10
-popup/item_11/text = "CUE"
-popup/item_11/id = 11
-popup/item_12/text = "GENERIC"
-popup/item_12/id = 12
-popup/item_13/text = "BEAT"
-popup/item_13/id = 13
-popup/item_14/text = "CUE"
-popup/item_14/id = 14
-popup/item_15/text = "GENERIC"
-popup/item_15/id = 15
-popup/item_16/text = "BEAT"
-popup/item_16/id = 16
-popup/item_17/text = "CUE"
-popup/item_17/id = 17
-popup/item_18/text = "GENERIC"
-popup/item_18/id = 18
-popup/item_19/text = "BEAT"
-popup/item_19/id = 19
-popup/item_20/text = "CUE"
-popup/item_20/id = 20
-popup/item_21/text = "GENERIC"
-popup/item_21/id = 21
-popup/item_22/text = "BEAT"
-popup/item_22/id = 22
-popup/item_23/text = "CUE"
-popup/item_23/id = 23
-popup/item_24/text = "GENERIC"
-popup/item_24/id = 24
-popup/item_25/text = "BEAT"
-popup/item_25/id = 25
-popup/item_26/text = "CUE"
-popup/item_26/id = 26
-popup/item_27/text = "GENERIC"
-popup/item_27/id = 27
-popup/item_28/text = "BEAT"
-popup/item_28/id = 28
-popup/item_29/text = "CUE"
-popup/item_29/id = 29
-popup/item_30/text = "GENERIC"
-popup/item_30/id = 30
-popup/item_31/text = "BEAT"
-popup/item_31/id = 31
-popup/item_32/text = "CUE"
-popup/item_32/id = 32
-popup/item_33/text = "GENERIC"
-popup/item_33/id = 33
-popup/item_34/text = "BEAT"
-popup/item_34/id = 34
-popup/item_35/text = "CUE"
-popup/item_35/id = 35
-popup/item_36/text = "GENERIC"
-popup/item_36/id = 36
-popup/item_37/text = "BEAT"
-popup/item_37/id = 37
-popup/item_38/text = "CUE"
-popup/item_38/id = 38
-popup/item_39/text = "GENERIC"
-popup/item_39/id = 39
-popup/item_40/text = "BEAT"
-popup/item_40/id = 40
-popup/item_41/text = "CUE"
-popup/item_41/id = 41
-popup/item_42/text = "GENERIC"
-popup/item_42/id = 42
-popup/item_43/text = "BEAT"
-popup/item_43/id = 43
-popup/item_44/text = "CUE"
-popup/item_44/id = 44
-popup/item_45/text = "GENERIC"
-popup/item_45/id = 45
-popup/item_46/text = "BEAT"
-popup/item_46/id = 46
-popup/item_47/text = "CUE"
-popup/item_47/id = 47
-popup/item_48/text = "GENERIC"
-popup/item_48/id = 48
-popup/item_49/text = "BEAT"
-popup/item_49/id = 49
-popup/item_50/text = "CUE"
-popup/item_50/id = 50
-popup/item_51/text = "GENERIC"
-popup/item_51/id = 51
-popup/item_52/text = "BEAT"
-popup/item_52/id = 52
-popup/item_53/text = "CUE"
-popup/item_53/id = 53
-popup/item_54/text = "GENERIC"
-popup/item_54/id = 54
-popup/item_55/text = "BEAT"
-popup/item_55/id = 55
-popup/item_56/text = "CUE"
-popup/item_56/id = 56
-popup/item_57/text = "GENERIC"
-popup/item_57/id = 57
-popup/item_58/text = "BEAT"
-popup/item_58/id = 58
-popup/item_59/text = "CUE"
-popup/item_59/id = 59
-popup/item_60/text = "GENERIC"
-popup/item_60/id = 60
-popup/item_61/text = "BEAT"
-popup/item_61/id = 61
-popup/item_62/text = "CUE"
-popup/item_62/id = 62
-popup/item_63/text = "GENERIC"
-popup/item_63/id = 63
-popup/item_64/text = "BEAT"
-popup/item_64/id = 64
-popup/item_65/text = "CUE"
-popup/item_65/id = 65
-popup/item_66/text = "GENERIC"
-popup/item_66/id = 66
-popup/item_67/text = "BEAT"
-popup/item_67/id = 67
-popup/item_68/text = "CUE"
-popup/item_68/id = 68
-
-[node name="PanelSeparator" type="VSeparator" parent="PluginHBox"]
-layout_mode = 2
-
-[node name="Inspector" type="Control" parent="PluginHBox"]
+[node name="Inspector" type="Control" parent="VBoxContainer/PluginHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PresetCreator" type="HBoxContainer" parent="PluginHBox/Inspector"]
+[node name="PresetCreator" parent="VBoxContainer/PluginHBox/Inspector" instance=ExtResource("4_4ngnw")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_4ngnw")
-
-[node name="PresetViewport" type="VBoxContainer" parent="PluginHBox/Inspector/PresetCreator"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 0
-
-[node name="PresetRuler" type="Control" parent="PluginHBox/Inspector/PresetCreator/PresetViewport"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-theme = ExtResource("1_4ngnw")
-theme_type_variation = &"TimeRuler"
-script = ExtResource("6_m5qje")
-
-[node name="PresetDisplay" type="Control" parent="PluginHBox/Inspector/PresetCreator/PresetViewport"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("1_4ngnw")
-theme_type_variation = &"WaveformDisplay"
-script = ExtResource("6_wdfka")
-
-[node name="Buttons" type="VBoxContainer" parent="PluginHBox/Inspector/PresetCreator"]
-layout_mode = 2
-alignment = 2
-
-[node name="PresetLabel" type="Label" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-text = "Reusable Presets"
-label_settings = SubResource("LabelSettings_i807x")
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-
-[node name="NameEdit" type="LineEdit" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-placeholder_text = "Preset Name"
-
-[node name="BeatsInMeasureBox" type="SpinBox" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-min_value = 1.0
-max_value = 16.0
-value = 4.0
-rounded = true
-alignment = 2
-suffix = "Beats/Measure"
-
-[node name="NumOfMeasuresBox" type="SpinBox" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-min_value = 1.0
-max_value = 2.0
-value = 1.0
-rounded = true
-alignment = 2
-suffix = "Measures"
-
-[node name="SaveButton" type="Button" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-text = "Save Preset"
-
-[node name="PresetList" type="ItemList" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-size_flags_vertical = 3
-allow_reselect = true
-item_count = 1
-item_0/text = "Saved Presets"
-item_0/selectable = false
-item_0/disabled = true
-
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="PluginHBox/Inspector/PresetCreator/Buttons/PresetList"]
-title = "Confirm Load..."
-position = Vector2i(0, 36)
-size = Vector2i(276, 100)
-theme = ExtResource("1_4ngnw")
-ok_button_text = "Load"
-dialog_text = "Unsaved Preset data (if any) will be lost.
-Load selected preset?"
-
-[node name="AudioFileDialog" type="FileDialog" parent="."]
-title = "Open a File"
-ok_button_text = "Open"
-file_mode = 0
-filters = PackedStringArray("*.wav")
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_n4urq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AudioPlayer"]
 libraries = {
-&"": SubResource("AnimationLibrary_4ngnw")
+&"": SubResource("AnimationLibrary_m5qje")
 }
+
+[node name="FileDialog" type="FileDialog" parent="."]
+
+[node name="WAVDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.wav")

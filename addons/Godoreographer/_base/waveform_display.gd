@@ -7,7 +7,6 @@ signal seek_requested(time: float)
 ## Waveform Calculation
 var current_waveform : PackedFloat32Array = []
 var waveform_levels : Array[PackedFloat32Array] = []
-var original_sample_rate := 48000.0
 var samples_per_second_needed := 80.0
 
 ## Markers
@@ -115,9 +114,8 @@ func _draw() -> void:
 
 
 ## Waveform
-func set_waveform(_full_waveform : PackedFloat32Array, _song_length_sec, _original_sample_rate):
+func set_waveform(_full_waveform : PackedFloat32Array, _song_length_sec):
 	song_length = _song_length_sec
-	original_sample_rate = _original_sample_rate
 	
 	reset_to_zero()
 	
@@ -285,7 +283,6 @@ func pick_best_level() -> PackedFloat32Array:
 	
 	var total_samples_on_screen = size.x
 	samples_per_second_needed = total_samples_on_screen / range
-	#samples_per_second_needed = (range / size.x) * original_sample_rate
 	
 	for i in waveform_levels.size():
 		var level = waveform_levels[i]

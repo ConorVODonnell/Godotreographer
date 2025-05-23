@@ -6,7 +6,7 @@ extends Control
 @export var play_pause_button: Button
 @export var loaded_file_name: Label
 @export var audio_player: AudioStreamPlayer
-@onready var waveform_display: WaveformDisplay = $PluginHBox/WaveformViewport/WaveformDisplay
+@onready var waveform_display: WaveformDisplay = $VBoxContainer/PluginHBox/WaveformViewport/WaveformDisplay
 
 var playback_position := 0.0 :
 	set(value):
@@ -18,7 +18,7 @@ func _ready() -> void:
 	load_button.pressed.connect(_on_load_audio_pressed)
 	audio_file_dialog.file_selected.connect(_on_audio_file_selected)
 	play_pause_button.pressed.connect(_on_play_pause_pressed)
-	var top_buttons = $PluginHBox/WaveformViewport/TopButtonContainer
+	var top_buttons = $VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer
 	top_buttons.get_node("ZoomInButton").pressed.connect(waveform_display.zoom_player_display.bind(true))
 	top_buttons.get_node("ZoomOutButton").pressed.connect(waveform_display.zoom_player_display.bind(false))
 	top_buttons.get_node("PanLeftButton").pressed.connect(pan_player_display.bind(true))
@@ -60,7 +60,7 @@ func _on_audio_file_selected(path: String):
 		loaded_file_name.text = path.get_file()
 		
 		var full_waveform = convert_byte_data_to_amplitudes(stream.data)
-		waveform_display.set_waveform(full_waveform, stream.get_length(), stream.mix_rate)
+		waveform_display.set_waveform(full_waveform, stream.get_length())
 	else:
 		loaded_file_name.text = "Invalid or unsupported audio file"
 func convert_byte_data_to_amplitudes(byte_data : PackedByteArray) -> PackedFloat32Array:
