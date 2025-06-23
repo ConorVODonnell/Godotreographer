@@ -6,7 +6,7 @@ var dock
 
 func _enter_tree() -> void:
 	# Initialization of the plugin goes here.
-	dock = preload("res://addons/Godoreographer/godoreographer.tscn").instantiate()
+	dock = preload("res://addons/Godoreographer/_base/godoreographer.tscn").instantiate()
 	add_control_to_bottom_panel(dock, "Godoreographer")
 	make_bottom_panel_item_visible(dock)
 
