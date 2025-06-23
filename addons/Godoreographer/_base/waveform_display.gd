@@ -84,6 +84,7 @@ var click_threshold :
 
 func _ready() -> void:
 	var dropdown = $"../SelectedMarkerContainer/MarkerTypeDropdown" as OptionButton
+	dropdown.clear()
 	for i in MarkerData.Types.size():
 		dropdown.add_item(MarkerData.Types.keys()[i])
 		dropdown.set_item_text(i, MarkerData.Types.keys()[i])
@@ -187,7 +188,7 @@ func handle_left_mouse(event):      #  Place Marker   #   +Shift Seeks
 	
 	#  Select Marker
 	else:
-		var selected = get_marker_near(clicked_time)
+		var selected = get_marker_near(event.position.x)
 		
 		if selected:	selected_marker = selected
 		else: 			add_marker(clicked_time)
