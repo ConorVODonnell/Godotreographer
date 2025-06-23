@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://clngehkffa06c"]
+[gd_scene load_steps=9 format=3 uid="uid://clngehkffa06c"]
 
 [ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/_base/godoreographer_theme.tres" id="1_4ngnw"]
 [ext_resource type="Script" uid="uid://boiet3sgolq76" path="res://addons/Godoreographer/_base/godoreographer.gd" id="1_n7r65"]
+[ext_resource type="PackedScene" uid="uid://dyh224pr6boca" path="res://addons/Godoreographer/menu/menu_bar.tscn" id="3_4ngnw"]
 [ext_resource type="PackedScene" uid="uid://caqofl2aputmj" path="res://addons/Godoreographer/waveform_viewport.tscn" id="3_i807x"]
 [ext_resource type="PackedScene" uid="uid://drgh3g7eolrl3" path="res://addons/Godoreographer/presets/preset_creator.tscn" id="4_4ngnw"]
 [ext_resource type="AudioStream" uid="uid://cbku32bieh2p0" path="res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav" id="4_n4urq"]
@@ -26,7 +27,7 @@ theme = ExtResource("1_4ngnw")
 theme_type_variation = &"Godotreographer"
 script = ExtResource("1_n7r65")
 load_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/LoadButton")
-audio_file_dialog = NodePath("WAVDialog")
+audio_file_dialog = NodePath("LoadDialog")
 play_pause_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
 loaded_file_name = NodePath("VBoxContainer/PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
 audio_player = NodePath("AudioPlayer")
@@ -39,6 +40,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MenuBar" parent="VBoxContainer" instance=ExtResource("3_4ngnw")]
+layout_mode = 2
 
 [node name="PluginHBox" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -66,8 +70,13 @@ libraries = {
 
 [node name="FileDialog" type="FileDialog" parent="."]
 
+[node name="LoadDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.tres")
+
 [node name="WAVDialog" type="FileDialog" parent="."]
-auto_translate_mode = 1
 title = "Open a File"
 ok_button_text = "Open"
 file_mode = 0
