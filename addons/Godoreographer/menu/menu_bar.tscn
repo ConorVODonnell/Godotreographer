@@ -15,7 +15,6 @@ item_0/text = "Create Project"
 item_0/id = 0
 item_1/text = "Load Project"
 item_1/id = 1
-item_1/disabled = true
 item_2/text = "Save Project As..."
 item_2/id = 2
 item_2/disabled = true
@@ -34,7 +33,7 @@ filters = PackedStringArray("*.wav")
 [node name="LoadDialog" type="FileDialog" parent="."]
 auto_translate_mode = 1
 title = "Open a File"
-ok_button_text = "Open"
+ok_button_text = "Load Project"
 mode_overrides_title = false
 file_mode = 0
 filters = PackedStringArray("*.tres")
@@ -44,4 +43,5 @@ filters = PackedStringArray("*.tres")
 
 [connection signal="index_pressed" from="FileMenu" to="FileMenu" method="_on_file_menu_pressed"]
 [connection signal="file_selected" from="WAVDialog" to="FileMenu" method="on_WAV_file_selected"]
+[connection signal="file_selected" from="LoadDialog" to="FileMenu" method="on_project_selected"]
 [connection signal="file_selected" from="SaveAsDialog" to="FileMenu" method="on_save_project"]

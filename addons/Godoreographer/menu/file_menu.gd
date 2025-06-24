@@ -37,7 +37,11 @@ func on_WAV_file_selected(path : String):
 
 # -> Load Project
 func on_project_selected(path : String):
-	pass
+	var loaded_project : GodoreographerProject = ResourceLoader.load(path)
+	loaded_project.prep()
+	current_save_path = path
+	
+	current_project = loaded_project
 
 
 func on_save_project(path : String):
