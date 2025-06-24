@@ -1,24 +1,34 @@
 extends Resource
 class_name GodoreographerProject
 
-@export var display_name : String
+## Runtime File
 @export var runtime_data : SyncedTrackData
 var stream :
 	get():
 		return runtime_data.audio_stream
+
+## Saved/Loaded
+@export var display_name : String
 @export var audio_length : float
-@export var current_waveform : PackedFloat32Array
-@export var full_waveform : PackedFloat32Array
-@export var waveform_levels : Array[PackedFloat32Array] = []
 @export var ui_state : Dictionary # zoom, scroll, etc.
+@export var current_level_index : int = 0
+
+## Recalculated on Load
+var full_waveform : PackedFloat32Array = []
+var waveform_levels : Array[PackedFloat32Array] = [[]]
 
 
-func _init(_runtime_data : SyncedTrackData, audio_name : String) -> void:
+func create(_runtime_data : SyncedTrackData, audio_name : String) -> GodoreographerProject:
 	self.runtime_data = _runtime_data
 	display_name = audio_name
-	
-	full_waveform = convert_byte_data_to_amplitudes(stream.data)
 	audio_length = stream.get_length()
+	
+	prep()
+	return self
+
+
+func prep():
+	full_waveform = convert_byte_data_to_amplitudes(stream.data)
 	
 	generate_waveform_levels()
 

@@ -14,7 +14,7 @@ var project : GodoreographerProject:
 		else: visible = true
 		reset_to_zero()
 	
-		current_waveform = pick_best_level()
+		project.current_level_index = pick_best_level()
 		samples_per_second_needed = current_waveform.size() / audio_length
 		queue_redraw()
 var waveform_levels : Array[PackedFloat32Array]:
@@ -24,10 +24,8 @@ var audio_length : float:
 	get():
 		return project.audio_length
 var current_waveform : PackedFloat32Array :
-	set(value):
-		project.current_waveform = value
 	get():
-		return project.current_waveform
+		return project.waveform_levels[project.current_level_index]
 var samples_per_second_needed := 80.0
 
 ## Markers
@@ -251,8 +249,8 @@ func zoom_player_display(zoom_in : bool):
 		max_range_out = false
 	elif not max_range_out: # zoom out, if not all the way
 		range_index += 1
-func pick_best_level() -> PackedFloat32Array:
-	if waveform_levels.is_empty(): return PackedFloat32Array()
+func pick_best_level() -> int:
+	if waveform_levels.is_empty(): return 0
 	
 	var total_samples_on_screen = size.x
 	samples_per_second_needed = total_samples_on_screen / range
@@ -262,10 +260,10 @@ func pick_best_level() -> PackedFloat32Array:
 		var level_sample_rate = level.size() / audio_length
 		
 		if level_sample_rate <= samples_per_second_needed:
-			return level
+			return i
 	
 	# Fallback, return last level
-	return waveform_levels[-1]
+	return -1
 
 
 ## External Updates
