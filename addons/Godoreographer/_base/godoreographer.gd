@@ -1,12 +1,20 @@
 @tool
 extends Control
 
-@export var load_button: Button
-@export var audio_file_dialog: FileDialog
+var project : GodoreographerProject:
+	set(value):
+		project = value
+		waveform_display.project = project
+		
+		if not project: return
+		audio_player.stream = project.stream
+		loaded_file_name.text = project.display_name
+		#loaded_file_name.text = path.get_file()
+@onready var menu_bar: GodoreographerMenuBar = $VBoxContainer/MenuBar
 @export var play_pause_button: Button
 @export var loaded_file_name: Label
 @export var audio_player: AudioStreamPlayer
-@onready var waveform_display: WaveformDisplay = $VBoxContainer/PluginHBox/WaveformViewport/WaveformDisplay
+@onready var waveform_display: WaveformDisplay = $VBoxContainer/PluginHBox/WaveformViewport/Control/WaveformDisplay
 
 var playback_position := 0.0 :
 	set(value):
@@ -15,8 +23,6 @@ var playback_position := 0.0 :
 
 
 func _ready() -> void:
-	load_button.pressed.connect(_on_load_audio_pressed)
-	audio_file_dialog.file_selected.connect(_on_audio_file_selected)
 	play_pause_button.pressed.connect(_on_play_pause_pressed)
 	var top_buttons = $VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer
 	top_buttons.get_node("ZoomInButton").pressed.connect(waveform_display.zoom_player_display.bind(true))
@@ -26,9 +32,11 @@ func _ready() -> void:
 	audio_player.finished.connect(set_song_to_zero)
 	waveform_display.seek_requested.connect(_on_seek_requested)
 	
+	menu_bar.project_changed.connect(func(new_project): project = new_project)
+	
 	# For development
 	# Automatically chooses a song when plugin is enabled
-	call_deferred("_on_audio_file_selected", "res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav")
+	#call_deferred("_on_audio_file_selected", "res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav")
 	focus_mode = Control.FOCUS_CLICK
 
 
@@ -49,46 +57,11 @@ func _process(delta: float) -> void:
 
 
 ## Select new song
-func _on_load_audio_pressed():
-	audio_file_dialog.popup_centered()
-func _on_audio_file_selected(path: String):
-	print("Selected audio path:", path)
-	var stream = load(path)
-	
-	if stream is AudioStreamWAV:
-		audio_player.stream = stream
-		loaded_file_name.text = path.get_file()
-		
-		var full_waveform = convert_byte_data_to_amplitudes(stream.data)
-		waveform_display.set_waveform(full_waveform, stream.get_length())
-	else:
-		loaded_file_name.text = "Invalid or unsupported audio file"
-func convert_byte_data_to_amplitudes(byte_data : PackedByteArray) -> PackedFloat32Array:
-	var result := PackedFloat32Array()
-	var sample_count = byte_data.size() / 4  # 4 bytes per stereo frame (2 bytes per channel)
-	result.resize(sample_count)
-	
-	for i in sample_count:
-		var left = byte_data.decode_s16(i * 4)
-		var right = byte_data.decode_s16((i * 4) + 2)
-		var sample = (left + right) / 2 / 32768.0  # Convert to float
-		result[i] = abs(sample)
-	
-	#print("Sample count: ", sample_count)
-	#print("Byte size: ", byte_data.size())
-	#print("10 averaged samples from 60 to 70:")
-	#for i in range(60, 70):
-		#var left = byte_data.decode_s16(i * 4)
-		#var right = byte_data.decode_s16(i * 4 + 2)
-		#var avg = (left + right) / 2.0 / 32768.0
-		#print("i=", i, " L=", left, " R=", right, " avg=", avg)
-	return result
 func _on_marker_type_dropdown_item_selected(index):
 	var type_string = $MarkerTypeDropdown.get_item_text(index)
 	if waveform_display.selected_marker:
 		waveform_display.selected_marker.type = type_string
 		waveform_display.queue_redraw()
-
 
 ##  Handle User Input
 func _on_play_pause_pressed():

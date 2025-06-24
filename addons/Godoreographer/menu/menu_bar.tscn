@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dyh224pr6boca"]
+[gd_scene load_steps=3 format=3 uid="uid://dyh224pr6boca"]
 
+[ext_resource type="Script" uid="uid://d2k2es0o0malg" path="res://addons/Godoreographer/menu/menu_bar.gd" id="1_6rdbt"]
 [ext_resource type="Script" uid="uid://cnbwfob78cfic" path="res://addons/Godoreographer/menu/file_menu.gd" id="1_x24qc"]
 
 [node name="MenuBar" type="MenuBar"]
+script = ExtResource("1_6rdbt")
 
 [node name="FileMenu" type="PopupMenu" parent="."]
 auto_translate_mode = 1
@@ -18,6 +20,7 @@ script = ExtResource("1_x24qc")
 
 [node name="WAVDialog" type="FileDialog" parent="."]
 title = "Create New Project"
+ok_button_text = "Select Audio"
 mode_overrides_title = false
 file_mode = 0
 filters = PackedStringArray("*.wav")

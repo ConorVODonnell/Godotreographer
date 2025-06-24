@@ -7,6 +7,7 @@ var stream :
 	get():
 		return runtime_data.audio_stream
 @export var audio_length : float
+@export var current_waveform : PackedFloat32Array
 @export var full_waveform : PackedFloat32Array
 @export var waveform_levels : Array[PackedFloat32Array] = []
 @export var ui_state : Dictionary # zoom, scroll, etc.
@@ -14,7 +15,7 @@ var stream :
 
 func _init(_runtime_data : SyncedTrackData, audio_name : String) -> void:
 	self.runtime_data = _runtime_data
-	display_name = stream.resource_name
+	display_name = audio_name
 	
 	full_waveform = convert_byte_data_to_amplitudes(stream.data)
 	audio_length = stream.get_length()

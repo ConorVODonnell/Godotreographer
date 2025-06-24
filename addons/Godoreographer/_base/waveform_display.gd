@@ -4,9 +4,30 @@ class_name WaveformDisplay
 
 signal seek_requested(time: float)
 
-## Waveform Calculation
-var current_waveform : PackedFloat32Array = []
-var waveform_levels : Array[PackedFloat32Array] = []
+## Project
+var project : GodoreographerProject:
+	set(value):
+		project = value
+		if project == null:	
+			visible = false
+			return
+		else: visible = true
+		reset_to_zero()
+	
+		current_waveform = pick_best_level()
+		samples_per_second_needed = current_waveform.size() / audio_length
+		queue_redraw()
+var waveform_levels : Array[PackedFloat32Array]:
+	get():
+		return project.waveform_levels
+var audio_length : float:
+	get():
+		return project.audio_length
+var current_waveform : PackedFloat32Array :
+	set(value):
+		project.current_waveform = value
+	get():
+		return project.current_waveform
 var samples_per_second_needed := 80.0
 
 ## Markers
@@ -28,13 +49,12 @@ var selected_marker : MarkerData = null:
 			dropdown.visible = false
 
 ## Song info
-var song_length : float = 60.0  # seconds
 var seconds_per_pixel : float
 
 ## Display
 var visible_start : float  = 0.0:  # time scroll position (in seconds)
 	set(value):
-		visible_start = clampf(value, 0.0, song_length - range)
+		visible_start = clampf(value, 0.0, audio_length - range)
 		queue_redraw()
 		update_ruler()
 # Amount of time displayed, as range
@@ -44,18 +64,18 @@ var range_index := 1: # start at 10
 		# clamps within the array it indexes for
 		range_index = clampi(value, 0, possible_ranges.size() - 1)
 		range = possible_ranges[range_index]
-		if song_length <= possible_ranges[range_index]:
+		if audio_length <= possible_ranges[range_index]:
 				max_range_out = true
 # seconds visible at once
 var possible_ranges : PackedFloat32Array = [5.0, 10.0, 15.0, 30.0, 60.0, 120.0, INF]
 var range : float :
 	set(value):
 		range = value
-		range = clampf(value, 0.1, song_length)
+		range = clampf(value, 0.1, audio_length)
 		var display_text = "Range: " + str(int(range)) + " sec"
-		if range == song_length:
+		if range == audio_length:
 			display_text = "Range: ~" + str(int(range)) + " sec"
-		$"../InfoHBox/RangeLabel".text = display_text
+		$"../../InfoHBox/RangeLabel".text = display_text
 		seconds_per_pixel = range / size.x
 		
 		visible_start = visible_start # refresh
@@ -78,17 +98,16 @@ var click_threshold :
 	get():
 		return threshold_pixels_away * seconds_per_pixel
 
-@onready var time_ruler: TimeRuler = $"../TimeRuler" as TimeRuler
+@onready var time_ruler: TimeRuler = $"../../TimeRuler" as TimeRuler
 
 
 func _ready() -> void:
-	var dropdown = $"../SelectedMarkerContainer/MarkerTypeDropdown" as OptionButton
+	var dropdown = $"../../SelectedMarkerContainer/MarkerTypeDropdown" as OptionButton
 	dropdown.clear()
 	for i in MarkerData.Types.size():
 		dropdown.add_item(MarkerData.Types.keys()[i])
 		dropdown.set_item_text(i, MarkerData.Types.keys()[i])
-	dropdown.item_selected.connect(func(index):
-		selected_marker.type_index = index)
+	dropdown.item_selected.connect(func(index): selected_marker.type_index = index)
 
 func _gui_input(event: InputEvent) -> void:
 	# Click
@@ -103,7 +122,6 @@ func _gui_input(event: InputEvent) -> void:
 		handle_mouse_motion(event)
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), get_theme_color("background"))
 	if current_waveform.is_empty(): return
 	
 	draw_waveform()
@@ -115,58 +133,12 @@ func _draw() -> void:
 
 
 ## Waveform
-func set_waveform(_full_waveform : PackedFloat32Array, _song_length_sec):
-	song_length = _song_length_sec
-	
-	reset_to_zero()
-	
-	generate_waveform_levels(_full_waveform)
-	current_waveform = pick_best_level()
-	samples_per_second_needed = current_waveform.size() / song_length
-	queue_redraw()
 func reset_to_zero():
 	## Some things to refresh or init, every time you change song
 	## Refreshing these calls their setters, which ensures
 	## everything is clamped correctly
 	range_index = 1		#Set to 1 to be a little zoomed out. Could be 0 to cover <5 second songs
 	visible_start = 0.0
-
-func generate_waveform_levels(base_waveform : PackedFloat32Array, max_levels := 8):
-	waveform_levels.clear()
-	waveform_levels.append(base_waveform)
-	
-	var current = base_waveform
-	
-	for i in max_levels:
-		var next_level_size = current.size() / 2
-		if next_level_size <= 1 : break
-		
-		var downsampled = downsample(current, int(next_level_size))
-		waveform_levels.append(downsampled)
-		current = downsampled
-func downsample(samples : PackedFloat32Array, target_samples_per_song : int) -> PackedFloat32Array:
-	var result = PackedFloat32Array()
-	result.resize(target_samples_per_song)
-	
-	var chunk_size = samples.size() / target_samples_per_song
-	
-	for i in target_samples_per_song:
-		var start = int(i * chunk_size)
-		var end = int((i + 1) * chunk_size)
-		
-		var sum := 0.0
-		var count := 0.0
-		
-		for j in range(start, end):
-			if j >= samples.size():
-				break
-			sum += samples[j]
-			count += 1
-		
-		result[i] = sum / count if (count > 0) else 0.0
-	
-	
-	return result
 
 
 ## Input help
@@ -287,7 +259,7 @@ func pick_best_level() -> PackedFloat32Array:
 	
 	for i in waveform_levels.size():
 		var level = waveform_levels[i]
-		var level_sample_rate = level.size() / song_length
+		var level_sample_rate = level.size() / audio_length
 		
 		if level_sample_rate <= samples_per_second_needed:
 			return level
