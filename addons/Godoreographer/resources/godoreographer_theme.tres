@@ -1,10 +1,7 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bdbrorqnphd2y"]
-
-[ext_resource type="FontFile" uid="uid://cedq0k717lxaa" path="res://addons/Godoreographer/resources/OpenSans_SemiBold.woff2" id="1_0eqg6"]
+[gd_resource type="Theme" format=3 uid="uid://bdbrorqnphd2y"]
 
 [resource]
 Control/font_sizes/font_size = 14
-Control/fonts/semi_bold_font = ExtResource("1_0eqg6")
 TimeRuler/base_type = &"Control"
 TimeRuler/colors/background = Color(0.113725, 0.133333, 0.160784, 1)
 TimeRuler/colors/font = Color(0.333333, 0.372549, 0.431373, 1)

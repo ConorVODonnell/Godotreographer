@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://drgh3g7eolrl3"]
 
 [ext_resource type="Script" uid="uid://m4mmt5hjihd7" path="res://addons/Godoreographer/presets/preset_creator.gd" id="1_6ykph"]
-[ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/_base/godoreographer_theme.tres" id="2_fo27q"]
+[ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/resources/godoreographer_theme.tres" id="2_fo27q"]
 [ext_resource type="Script" uid="uid://c6bj4wc2eag04" path="res://addons/Godoreographer/presets/preset_ruler.gd" id="3_ya1yw"]
 [ext_resource type="Script" uid="uid://dkbvwrenmpivs" path="res://addons/Godoreographer/presets/preset_display.gd" id="4_4ib0b"]
 
