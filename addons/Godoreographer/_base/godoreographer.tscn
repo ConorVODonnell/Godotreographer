@@ -15,7 +15,7 @@ _data = {
 &"new_animation": SubResource("Animation_wdfka")
 }
 
-[node name="Godoreographer" type="Control" node_paths=PackedStringArray("load_button", "audio_file_dialog", "play_pause_button", "loaded_file_name", "audio_player")]
+[node name="Godoreographer" type="Control" node_paths=PackedStringArray("play_pause_button", "loaded_file_name", "audio_player")]
 custom_minimum_size = Vector2(0, 256)
 layout_mode = 3
 anchor_right = 1.0
@@ -26,8 +26,6 @@ focus_mode = 1
 theme = ExtResource("1_4ngnw")
 theme_type_variation = &"Godotreographer"
 script = ExtResource("1_n7r65")
-load_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/LoadButton")
-audio_file_dialog = NodePath("LoadDialog")
 play_pause_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
 loaded_file_name = NodePath("VBoxContainer/PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
 audio_player = NodePath("AudioPlayer")
@@ -67,17 +65,3 @@ stream = ExtResource("4_n4urq")
 libraries = {
 &"": SubResource("AnimationLibrary_m5qje")
 }
-
-[node name="FileDialog" type="FileDialog" parent="."]
-
-[node name="LoadDialog" type="FileDialog" parent="."]
-title = "Open a File"
-ok_button_text = "Open"
-file_mode = 0
-filters = PackedStringArray("*.tres")
-
-[node name="WAVDialog" type="FileDialog" parent="."]
-title = "Open a File"
-ok_button_text = "Open"
-file_mode = 0
-filters = PackedStringArray("*.wav")
