@@ -2,6 +2,7 @@
 class_name GodoreographerProject
 
 ## Runtime File
+#Saved separately for smaller runtime track
 @export var runtime_data : SyncedRuntimeTrack
 var stream :
 	get():
