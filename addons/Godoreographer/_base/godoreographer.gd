@@ -6,10 +6,12 @@ var project : GodoreographerProject:
 		project = value
 		waveform_display.project = project
 		
-		if not project: return
+		if not project:
+			audio_player.stream = null
+			loaded_file_name.text = "No project loaded."			
+			return
 		audio_player.stream = project.stream
 		loaded_file_name.text = project.display_name
-		#loaded_file_name.text = path.get_file()
 @onready var menu_bar: GodoreographerMenuBar = $VBoxContainer/MenuBar
 @export var play_pause_button: Button
 @export var loaded_file_name: Label
@@ -65,6 +67,7 @@ func _on_marker_type_dropdown_item_selected(index):
 
 ##  Handle User Input
 func _on_play_pause_pressed():
+	if not audio_player.stream: return
 	if audio_player.playing:
 		playback_position = audio_player.get_playback_position()
 		audio_player.stop()

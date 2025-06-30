@@ -18,6 +18,7 @@ var current_save_path : String = "":
 
 func _ready() -> void:
 	wav_dialog.ok_button_text = "Select Audio"
+	call_deferred("on_project_selected","res://addons/Godoreographer/resources/sample_save_load.tres")
 
 # Menu Bar -> File ->
 func _on_file_menu_pressed(index : int):
@@ -31,19 +32,22 @@ func _on_file_menu_pressed(index : int):
 func on_WAV_file_selected(path : String):
 	print("Selected audio path:", path)	
 	var stream : AudioStreamWAV = load(path)
-	var runtime_data := SyncedTrackData.new(stream)
+	var runtime_data := SyncedRuntimeTrack.new().create(stream)
 	current_project = GodoreographerProject.new().create(runtime_data, path.get_file())
 
 
 # -> Load Project
 func on_project_selected(path : String):
-	var loaded_project : GodoreographerProject = ResourceLoader.load(path)
-	loaded_project.prep()
-	current_save_path = path
+	var loaded_file= ResourceLoader.load(path)
 	
-	current_project = loaded_project
+	if loaded_file is GodoreographerProject:	
+		loaded_file.calculate_waveforms()
+		current_save_path = path
+		current_project = loaded_file
+	else:
+		push_error("Selected file is not a valid GodoreographerProject file.")
 
-
+# -> Save Project As... / or -> Save Project using cached current_save_path
 func on_save_project(path : String):
 	print("Saved project to: " + path)
 	current_save_path = path

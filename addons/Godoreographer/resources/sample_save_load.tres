@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="GodoreographerProject" load_steps=5 format=3 uid="uid://c7123o32lypmp"]
+
+[ext_resource type="AudioStream" uid="uid://cbku32bieh2p0" path="res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav" id="1_h8dr7"]
+[ext_resource type="Script" uid="uid://cpdt7widhl1gd" path="res://addons/Godoreographer/menu/synced_runtime_track.gd" id="2_okikk"]
+[ext_resource type="Script" uid="uid://da5c6r8keavet" path="res://addons/Godoreographer/menu/godoreographer_project.gd" id="3_0xxim"]
+
+[sub_resource type="Resource" id="Resource_lhrw5"]
+script = ExtResource("2_okikk")
+audio_stream = ExtResource("1_h8dr7")
+markers = []
+
+[resource]
+script = ExtResource("3_0xxim")
+runtime_data = SubResource("Resource_lhrw5")
+display_name = "sample Slow Groove with Tempo Change.wav"
+audio_length = 15.1162
+ui_state = {}
+current_level_index = -1

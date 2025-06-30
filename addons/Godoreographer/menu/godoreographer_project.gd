@@ -2,7 +2,7 @@
 class_name GodoreographerProject
 
 ## Runtime File
-@export var runtime_data : SyncedTrackData
+@export var runtime_data : SyncedRuntimeTrack
 var stream :
 	get():
 		return runtime_data.audio_stream
@@ -13,26 +13,32 @@ var stream :
 @export var ui_state : Dictionary # zoom, scroll, etc.
 @export var current_level_index : int = 0
 
+# @export Coll. of markers directly on the song
+# @export Coll. of Presets
+# @export Coll. of used Presets, and where they're used in the song 
+# Working Coll. of all markers
+
+
 ## Recalculated on Load
 var full_waveform : PackedFloat32Array = []
 var waveform_levels : Array[PackedFloat32Array] = [[]]
 
-
-func create(_runtime_data : SyncedTrackData, audio_name : String) -> GodoreographerProject:
+## Creates new project, after init
+func create(_runtime_data : SyncedRuntimeTrack, audio_name : String) -> GodoreographerProject:
 	self.runtime_data = _runtime_data
 	display_name = audio_name
 	audio_length = stream.get_length()
 	
-	prep()
+	calculate_waveforms()
 	return self
 
 
-func prep():
+## For WaveformDisplay. Recalculated, not saved, way too big
+func calculate_waveforms():
 	full_waveform = convert_byte_data_to_amplitudes(stream.data)
 	
 	generate_waveform_levels()
-
-
+# Converts raw audio stream to an array of samples
 func convert_byte_data_to_amplitudes(byte_data : PackedByteArray) -> PackedFloat32Array:
 	var result := PackedFloat32Array()
 	var sample_count = byte_data.size() / 4  # 4 bytes per stereo frame (2 bytes per channel)
@@ -45,8 +51,8 @@ func convert_byte_data_to_amplitudes(byte_data : PackedByteArray) -> PackedFloat
 		result[i] = abs(sample)
 
 	return result
-
-
+# Generates max_levels waveforms, each half the length of the previous
+# Used for (up to) max_levels levels of zoom, on waveform display
 func generate_waveform_levels(max_levels := 8):
 	waveform_levels.clear()
 	waveform_levels.append(full_waveform)

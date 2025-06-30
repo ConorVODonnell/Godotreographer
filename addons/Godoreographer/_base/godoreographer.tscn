@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://clngehkffa06c"]
+[gd_scene load_steps=8 format=3 uid="uid://clngehkffa06c"]
 
 [ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/resources/godoreographer_theme.tres" id="1_4ngnw"]
 [ext_resource type="Script" uid="uid://boiet3sgolq76" path="res://addons/Godoreographer/_base/godoreographer.gd" id="1_n7r65"]
 [ext_resource type="PackedScene" uid="uid://dyh224pr6boca" path="res://addons/Godoreographer/menu/menu_bar.tscn" id="3_4ngnw"]
 [ext_resource type="PackedScene" uid="uid://caqofl2aputmj" path="res://addons/Godoreographer/_base/waveform_viewport.tscn" id="3_i807x"]
 [ext_resource type="PackedScene" uid="uid://drgh3g7eolrl3" path="res://addons/Godoreographer/presets/preset_creator.tscn" id="4_4ngnw"]
-[ext_resource type="AudioStream" uid="uid://cbku32bieh2p0" path="res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav" id="4_n4urq"]
 
 [sub_resource type="Animation" id="Animation_wdfka"]
 resource_name = "new_animation"
@@ -59,7 +58,6 @@ size_flags_horizontal = 3
 layout_mode = 1
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_n4urq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AudioPlayer"]
 libraries = {

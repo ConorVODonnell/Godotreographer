@@ -32,7 +32,7 @@ filters = PackedStringArray("*.wav")
 
 [node name="LoadDialog" type="FileDialog" parent="."]
 auto_translate_mode = 1
-title = "Open a File"
+title = "Choose Godoreographer Project"
 ok_button_text = "Load Project"
 mode_overrides_title = false
 file_mode = 0

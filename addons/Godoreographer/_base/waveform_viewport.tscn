@@ -50,7 +50,7 @@ layout_mode = 2
 [node name="LoadedFileName" type="Label" parent="InfoHBox"]
 layout_mode = 2
 mouse_default_cursor_shape = 1
-text = "Song not chosen yet"
+text = "No project loaded."
 
 [node name="VSeparator" type="VSeparator" parent="InfoHBox"]
 layout_mode = 2
