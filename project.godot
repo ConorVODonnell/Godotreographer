@@ -21,7 +21,6 @@ enabled=PackedStringArray("res://addons/Godoreographer/plugin.cfg")
 [gui]
 
 theme/custom="uid://bdbrorqnphd2y"
-theme/custom_font="uid://cu3rsse6xb14i"
 
 [rendering]
 

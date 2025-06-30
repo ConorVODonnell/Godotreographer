@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://drgh3g7eolrl3"]
+
+[ext_resource type="Script" uid="uid://m4mmt5hjihd7" path="res://addons/Godoreographer/presets/preset_creator.gd" id="1_6ykph"]
+[ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/resources/godoreographer_theme.tres" id="2_fo27q"]
+[ext_resource type="Script" uid="uid://c6bj4wc2eag04" path="res://addons/Godoreographer/presets/preset_ruler.gd" id="3_ya1yw"]
+[ext_resource type="Script" uid="uid://dkbvwrenmpivs" path="res://addons/Godoreographer/presets/preset_display.gd" id="4_4ib0b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i807x"]
+font_size = 20
+
+[node name="PresetCreator" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6ykph")
+
+[node name="PresetViewport" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="PresetRuler" type="Control" parent="PresetViewport"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme = ExtResource("2_fo27q")
+theme_type_variation = &"TimeRuler"
+script = ExtResource("3_ya1yw")
+
+[node name="PresetDisplay" type="Control" parent="PresetViewport"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_fo27q")
+theme_type_variation = &"WaveformDisplay"
+script = ExtResource("4_4ib0b")
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 2
+
+[node name="PresetLabel" type="Label" parent="Buttons"]
+layout_mode = 2
+text = "Reusable Presets"
+label_settings = SubResource("LabelSettings_i807x")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Buttons"]
+layout_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="Buttons"]
+layout_mode = 2
+placeholder_text = "Preset Name"
+
+[node name="BeatsInMeasureBox" type="SpinBox" parent="Buttons"]
+layout_mode = 2
+min_value = 1.0
+max_value = 16.0
+value = 4.0
+rounded = true
+alignment = 2
+suffix = "Beats/Measure"
+
+[node name="NumOfMeasuresBox" type="SpinBox" parent="Buttons"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+min_value = 1.0
+max_value = 2.0
+value = 1.0
+rounded = true
+alignment = 2
+suffix = "Measures"
+
+[node name="SaveButton" type="Button" parent="Buttons"]
+layout_mode = 2
+text = "Save Preset"
+
+[node name="PresetList" type="ItemList" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_reselect = true
+item_count = 1
+item_0/text = "Saved Presets"
+item_0/selectable = false
+item_0/disabled = true
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Buttons/PresetList"]
+auto_translate_mode = 1
+title = "Confirm Load..."
+position = Vector2i(0, 36)
+size = Vector2i(276, 100)
+theme = ExtResource("2_fo27q")
+ok_button_text = "Load"
+dialog_text = "Unsaved Preset data (if any) will be lost.
+Load selected preset?"

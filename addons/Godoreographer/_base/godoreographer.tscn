@@ -1,26 +1,20 @@
-[gd_scene load_steps=12 format=3 uid="uid://clngehkffa06c"]
+[gd_scene load_steps=8 format=3 uid="uid://clngehkffa06c"]
 
-[ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/_base/godoreographer_theme.tres" id="1_0ypvk"]
-[ext_resource type="Script" uid="uid://boiet3sgolq76" path="res://addons/Godoreographer/_base/godoreographer.gd" id="2_qjhoq"]
-[ext_resource type="Script" uid="uid://dltpwy6vxfov0" path="res://addons/Godoreographer/_base/time_ruler.gd" id="3_jc7ys"]
-[ext_resource type="Script" uid="uid://bu2qptn4bhahd" path="res://addons/Godoreographer/_base/waveform_display.gd" id="4_ed3uo"]
-[ext_resource type="Script" uid="uid://m4mmt5hjihd7" path="res://addons/Godoreographer/presets/preset_creator.gd" id="5_yl03w"]
-[ext_resource type="Script" uid="uid://c6bj4wc2eag04" path="res://addons/Godoreographer/presets/preset_ruler.gd" id="6_fvia3"]
-[ext_resource type="Script" uid="uid://dkbvwrenmpivs" path="res://addons/Godoreographer/presets/preset_display.gd" id="7_gh8qv"]
-[ext_resource type="AudioStream" uid="uid://cbku32bieh2p0" path="res://addons/Godoreographer/resources/sample Slow Groove with Tempo Change.wav" id="8_shwfq"]
+[ext_resource type="Theme" uid="uid://bdbrorqnphd2y" path="res://addons/Godoreographer/resources/godoreographer_theme.tres" id="1_4ngnw"]
+[ext_resource type="Script" uid="uid://boiet3sgolq76" path="res://addons/Godoreographer/_base/godoreographer.gd" id="1_n7r65"]
+[ext_resource type="PackedScene" uid="uid://dyh224pr6boca" path="res://addons/Godoreographer/menu/menu_bar.tscn" id="3_4ngnw"]
+[ext_resource type="PackedScene" uid="uid://caqofl2aputmj" path="res://addons/Godoreographer/_base/waveform_viewport.tscn" id="3_i807x"]
+[ext_resource type="PackedScene" uid="uid://drgh3g7eolrl3" path="res://addons/Godoreographer/presets/preset_creator.tscn" id="4_4ngnw"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_i807x"]
-font_size = 20
-
-[sub_resource type="Animation" id="Animation_i807x"]
+[sub_resource type="Animation" id="Animation_wdfka"]
 resource_name = "new_animation"
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ngnw"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m5qje"]
 _data = {
-&"new_animation": SubResource("Animation_i807x")
+&"new_animation": SubResource("Animation_wdfka")
 }
 
-[node name="Godoreographer" type="Control" node_paths=PackedStringArray("load_button", "audio_file_dialog", "play_pause_button", "loaded_file_name", "audio_player")]
+[node name="Godoreographer" type="Control" node_paths=PackedStringArray("play_pause_button", "loaded_file_name", "audio_player")]
 custom_minimum_size = Vector2(0, 256)
 layout_mode = 3
 anchor_right = 1.0
@@ -28,17 +22,16 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 1
-theme = ExtResource("1_0ypvk")
+theme = ExtResource("1_4ngnw")
 theme_type_variation = &"Godotreographer"
-script = ExtResource("2_qjhoq")
-load_button = NodePath("PluginHBox/WaveformViewport/TopButtonContainer/LoadButton")
-audio_file_dialog = NodePath("AudioFileDialog")
-play_pause_button = NodePath("PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
-loaded_file_name = NodePath("PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
+script = ExtResource("1_n7r65")
+play_pause_button = NodePath("VBoxContainer/PluginHBox/WaveformViewport/TopButtonContainer/PlayPauseButton")
+loaded_file_name = NodePath("VBoxContainer/PluginHBox/WaveformViewport/InfoHBox/LoadedFileName")
 audio_player = NodePath("AudioPlayer")
 metadata/_edit_lock_ = true
 
-[node name="PluginHBox" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+>>>>>>> origin/save-files
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,202 +39,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WaveformViewport" type="VBoxContainer" parent="PluginHBox"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="TopButtonContainer" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
+[node name="MenuBar" parent="VBoxContainer" instance=ExtResource("3_4ngnw")]
 layout_mode = 2
 
-[node name="LoadButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Load Audio"
-
-[node name="PlayPauseButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Play"
-
-[node name="VSeparator" type="VSeparator" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
+[node name="PluginHBox" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="ZoomInButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Zoom In"
-
-[node name="ZoomOutButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Zoom Out"
-
-[node name="VSeparator2" type="VSeparator" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
+[node name="WaveformViewport" parent="VBoxContainer/PluginHBox" instance=ExtResource("3_i807x")]
 layout_mode = 2
 
-[node name="PanLeftButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Pan Left"
-
-[node name="PanRightButton" type="Button" parent="PluginHBox/WaveformViewport/TopButtonContainer"]
-layout_mode = 2
-text = "Pan Right"
-
-[node name="InfoHBox" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(0, 32)
+[node name="PanelSeparator" type="VSeparator" parent="VBoxContainer/PluginHBox"]
 layout_mode = 2
 
-[node name="LoadedFileName" type="Label" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-mouse_default_cursor_shape = 1
-text = "sample Slow Groove with Tempo Change.wav"
-
-[node name="VSeparator" type="VSeparator" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-
-[node name="RangeLabel" type="Label" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-text = "Range: 10 sec"
-
-[node name="VSeparator2" type="VSeparator" parent="PluginHBox/WaveformViewport/InfoHBox"]
-layout_mode = 2
-
-[node name="TimeRuler" type="Control" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-theme = ExtResource("1_0ypvk")
-theme_type_variation = &"TimeRuler"
-script = ExtResource("3_jc7ys")
-
-[node name="WaveformDisplay" type="Control" parent="PluginHBox/WaveformViewport"]
-custom_minimum_size = Vector2(800, 150)
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 1
-theme = ExtResource("1_0ypvk")
-theme_type_variation = &"WaveformDisplay"
-script = ExtResource("4_ed3uo")
-
-[node name="SelectedMarkerContainer" type="HBoxContainer" parent="PluginHBox/WaveformViewport"]
-layout_mode = 2
-
-[node name="MarkerTypeDropdown" type="OptionButton" parent="PluginHBox/WaveformViewport/SelectedMarkerContainer"]
-visible = false
-layout_mode = 2
-flat = true
-selected = 0
-item_count = 3
-popup/item_0/text = "GENERIC"
-popup/item_0/id = 0
-popup/item_1/text = "BEAT"
-popup/item_1/id = 1
-popup/item_2/text = "CUE"
-popup/item_2/id = 2
-
-[node name="PanelSeparator" type="VSeparator" parent="PluginHBox"]
-layout_mode = 2
-
-[node name="Inspector" type="Control" parent="PluginHBox"]
+[node name="Inspector" type="Control" parent="VBoxContainer/PluginHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PresetCreator" type="HBoxContainer" parent="PluginHBox/Inspector"]
+[node name="PresetCreator" parent="VBoxContainer/PluginHBox/Inspector" instance=ExtResource("4_4ngnw")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_yl03w")
-
-[node name="PresetViewport" type="VBoxContainer" parent="PluginHBox/Inspector/PresetCreator"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 0
-
-[node name="PresetRuler" type="Control" parent="PluginHBox/Inspector/PresetCreator/PresetViewport"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-theme = ExtResource("1_0ypvk")
-theme_type_variation = &"TimeRuler"
-script = ExtResource("6_fvia3")
-
-[node name="PresetDisplay" type="Control" parent="PluginHBox/Inspector/PresetCreator/PresetViewport"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("1_0ypvk")
-theme_type_variation = &"WaveformDisplay"
-script = ExtResource("7_gh8qv")
-
-[node name="Buttons" type="VBoxContainer" parent="PluginHBox/Inspector/PresetCreator"]
-layout_mode = 2
-alignment = 2
-
-[node name="PresetLabel" type="Label" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-text = "Reusable Presets"
-label_settings = SubResource("LabelSettings_i807x")
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-
-[node name="NameEdit" type="LineEdit" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-placeholder_text = "Preset Name"
-
-[node name="BeatsInMeasureBox" type="SpinBox" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-min_value = 1.0
-max_value = 16.0
-value = 4.0
-rounded = true
-alignment = 2
-suffix = "Beats/Measure"
-
-[node name="NumOfMeasuresBox" type="SpinBox" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-min_value = 1.0
-max_value = 2.0
-value = 1.0
-rounded = true
-alignment = 2
-suffix = "Measures"
-
-[node name="SaveButton" type="Button" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-text = "Save Preset"
-
-[node name="PresetList" type="ItemList" parent="PluginHBox/Inspector/PresetCreator/Buttons"]
-layout_mode = 2
-size_flags_vertical = 3
-allow_reselect = true
-item_count = 1
-item_0/text = "Saved Presets"
-item_0/selectable = false
-item_0/disabled = true
-
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="PluginHBox/Inspector/PresetCreator/Buttons/PresetList"]
-title = "Confirm Load..."
-position = Vector2i(0, 36)
-size = Vector2i(276, 100)
-theme = ExtResource("1_0ypvk")
-ok_button_text = "Load"
-dialog_text = "Unsaved Preset data (if any) will be lost.
-Load selected preset?"
-
-[node name="AudioFileDialog" type="FileDialog" parent="."]
-title = "Open a File"
-ok_button_text = "Open"
-file_mode = 0
-filters = PackedStringArray("*.wav")
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_shwfq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AudioPlayer"]
 libraries = {
-&"": SubResource("AnimationLibrary_4ngnw")
+&"": SubResource("AnimationLibrary_m5qje")
 }
